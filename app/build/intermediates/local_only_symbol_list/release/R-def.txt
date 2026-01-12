@@ -1,0 +1,15 @@
+R_DEF: Internal format may change without notice
+local
+id clearButton
+id countTextView
+id emptyText
+id historyLabel
+id icon
+id lastUpdatedText
+id recyclerView
+id relTimeText
+id startButton
+id swipeRefresh
+id timeText
+layout activity_main
+layout item_unlock_event

@@ -1,0 +1,250 @@
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:36: Warning: A newer version of androidx.test.espresso:espresso-core than 3.5.1 is available: 3.7.0 [GradleDependency]
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:37: Warning: A newer version of androidx.test:runner than 1.5.2 is available: 1.7.0 [GradleDependency]
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:38: Warning: A newer version of androidx.test:rules than 1.5.0 is available: 1.7.0 [GradleDependency]
+    androidTestImplementation 'androidx.test:rules:1.5.0'
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:39: Warning: A newer version of androidx.core:core-ktx than 1.12.0 is available: 1.17.0 [GradleDependency]
+    implementation 'androidx.core:core-ktx:1.12.0'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:40: Warning: A newer version of androidx.appcompat:appcompat than 1.6.1 is available: 1.7.1 [GradleDependency]
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:41: Warning: A newer version of com.google.android.material:material than 1.11.0 is available: 1.13.0 [GradleDependency]
+    implementation 'com.google.android.material:material:1.11.0'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:43: Warning: A newer version of androidx.swiperefreshlayout:swiperefreshlayout than 1.1.0 is available: 1.2.0 [GradleDependency]
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:46: Warning: A newer version of androidx.room:room-runtime than 2.6.1 is available: 2.8.4 [GradleDependency]
+    implementation "androidx.room:room-runtime:$room_version"
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:47: Warning: A newer version of androidx.room:room-ktx than 2.6.1 is available: 2.8.4 [GradleDependency]
+    implementation "androidx.room:room-ktx:$room_version"
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle.kts:40: Warning: A newer version of androidx.test.espresso:espresso-core than 3.5.1 is available: 3.7.0 [GradleDependency]
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle.kts:41: Warning: A newer version of androidx.test:runner than 1.5.2 is available: 1.7.0 [GradleDependency]
+androidTestImplementation("androidx.test:runner:1.5.2")
+                           ~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle.kts:42: Warning: A newer version of androidx.test:rules than 1.5.2 is available: 1.7.0 [GradleDependency]
+androidTestImplementation("androidx.test:rules:1.5.2")
+                           ~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle.kts:47: Warning: A newer version of androidx.appcompat:appcompat than 1.6.1 is available: 1.7.1 [GradleDependency]
+    implementation("androidx.appcompat:appcompat:1.6.1")
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/gradle/libs.versions.toml:2: Warning: A newer version of com.android.application than 8.7.3 is available: 8.13.2 [GradleDependency]
+agp = "8.7.3"
+      ~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/gradle/libs.versions.toml:4: Warning: A newer version of androidx.core:core-ktx than 1.15.0 is available: 1.17.0 [GradleDependency]
+coreKtx = "1.15.0"
+          ~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/gradle/libs.versions.toml:6: Warning: A newer version of androidx.test.ext:junit than 1.2.1 is available: 1.3.0 [GradleDependency]
+junitVersion = "1.2.1"
+               ~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/gradle/libs.versions.toml:7: Warning: A newer version of androidx.test.espresso:espresso-core than 3.6.1 is available: 3.7.0 [GradleDependency]
+espressoCore = "3.6.1"
+               ~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/gradle/libs.versions.toml:8: Warning: A newer version of androidx.lifecycle:lifecycle-runtime-ktx than 2.8.7 is available: 2.10.0 [GradleDependency]
+lifecycleRuntimeKtx = "2.8.7"
+                      ~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/gradle/libs.versions.toml:9: Warning: A newer version of androidx.activity:activity-compose than 1.9.3 is available: 1.12.2 [GradleDependency]
+activityCompose = "1.9.3"
+                  ~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/gradle/libs.versions.toml:10: Warning: A newer version of androidx.compose:compose-bom than 2024.11.00 is available: 2025.12.01 [GradleDependency]
+composeBom = "2024.11.00"
+             ~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/gradle/libs.versions.toml:11: Warning: A newer version of androidx.room:room-compiler than 2.6.1 is available: 2.8.4 [GradleDependency]
+room = "2.6.1"
+       ~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/gradle/libs.versions.toml:11: Warning: A newer version of androidx.room:room-ktx than 2.6.1 is available: 2.8.4 [GradleDependency]
+room = "2.6.1"
+       ~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/gradle/libs.versions.toml:11: Warning: A newer version of androidx.room:room-runtime than 2.6.1 is available: 2.8.4 [GradleDependency]
+room = "2.6.1"
+       ~~~~~~~
+
+   Explanation for issues of type "GradleDependency":
+   This detector looks for usages of libraries where the version you are using
+   is not the current stable release. Using older versions is fine, and there
+   are cases where you deliberately want to stick with an older version.
+   However, you may simply not be aware that a more recent version is
+   available, and that is what this lint check helps find.
+
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/java/com/example/unlocklogger/BootReceiver.kt:12: Warning: Unnecessary; SDK_INT is always >= 26 [ObsoleteSdkInt]
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "ObsoleteSdkInt":
+   This check flags version checks that are not necessary, because the
+   minSdkVersion (or surrounding known API level) is already at least as high
+   as the version checked for.
+
+   Similarly, it also looks for resources in -vNN folders, such as values-v14
+   where the version qualifier is less than or equal to the minSdkVersion,
+   where the contents should be merged into the best folder.
+
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/res/layout/item_unlock_event.xml:8: Warning: Possible overdraw: Root element paints background ?android:attr/selectableItemBackground with a theme that also paints a background (inferred theme is @style/Theme.AppCompat.Light) [Overdraw]
+    android:background="?android:attr/selectableItemBackground">
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "Overdraw":
+   If you set a background drawable on a root view, then you should use a
+   custom theme where the theme background is null. Otherwise, the theme
+   background will be painted first, only to have your custom background
+   completely cover it; this is called "overdraw".
+
+   NOTE: This detector relies on figuring out which layouts are associated
+   with which activities based on scanning the Java code, and it's currently
+   doing that using an inexact pattern matching algorithm. Therefore, it can
+   incorrectly conclude which activity the layout is associated with and then
+   wrongly complain that a background-theme is hidden.
+
+   If you want your custom background on multiple pages, then you should
+   consider making a custom theme with your custom background and just using
+   that theme instead of a root element background.
+
+   Of course it's possible that your custom drawable is translucent and you
+   want it to be mixed with the background. However, you will get better
+   performance if you pre-mix the background with your drawable and use that
+   resulting image or color as a custom theme background instead.
+
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/res/layout/activity_main.xml:31: Warning: Buttons in button bars should be borderless; use style="?android:attr/buttonBarButtonStyle" (and ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
+        <Button
+         ~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/res/layout/activity_main.xml:38: Warning: Buttons in button bars should be borderless; use style="?android:attr/buttonBarButtonStyle" (and ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
+        <Button
+         ~~~~~~
+
+   Explanation for issues of type "ButtonStyle":
+   Button bars typically use a borderless style for the buttons. Set the
+   style="?android:attr/buttonBarButtonStyle" attribute on each of the
+   buttons, and set style="?android:attr/buttonBarStyle" on the parent layout
+
+   https://d.android.com/r/studio-ui/designer/material/dialogs
+
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:36: Warning: Use version catalog instead (androidx.test.espresso:espresso-core is already available as androidx-espresso-core, but using version 3.6.1 instead) [UseTomlInstead]
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:37: Warning: Use version catalog instead [UseTomlInstead]
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:38: Warning: Use version catalog instead [UseTomlInstead]
+    androidTestImplementation 'androidx.test:rules:1.5.0'
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:39: Warning: Use version catalog instead (androidx.core:core-ktx is already available as androidx-core-ktx, but using version 1.15.0 instead) [UseTomlInstead]
+    implementation 'androidx.core:core-ktx:1.12.0'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:40: Warning: Use version catalog instead [UseTomlInstead]
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:41: Warning: Use version catalog instead [UseTomlInstead]
+    implementation 'com.google.android.material:material:1.11.0'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:43: Warning: Use version catalog instead [UseTomlInstead]
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:46: Warning: Use the existing version catalog reference (libs.androidx.room.runtime) instead [UseTomlInstead]
+    implementation "androidx.room:room-runtime:$room_version"
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle:47: Warning: Use the existing version catalog reference (libs.androidx.room.ktx) instead [UseTomlInstead]
+    implementation "androidx.room:room-ktx:$room_version"
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle.kts:40: Warning: Use version catalog instead (androidx.test.espresso:espresso-core is already available as androidx-espresso-core, but using version 3.6.1 instead) [UseTomlInstead]
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle.kts:41: Warning: Use version catalog instead [UseTomlInstead]
+androidTestImplementation("androidx.test:runner:1.5.2")
+                           ~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle.kts:42: Warning: Use version catalog instead [UseTomlInstead]
+androidTestImplementation("androidx.test:rules:1.5.2")
+                           ~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle.kts:43: Warning: Use version catalog instead [UseTomlInstead]
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0")
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/build.gradle.kts:47: Warning: Use version catalog instead [UseTomlInstead]
+    implementation("androidx.appcompat:appcompat:1.6.1")
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UseTomlInstead":
+   If your project is using a libs.versions.toml file, you should place all
+   Gradle dependencies in the TOML file. This lint check looks for version
+   declarations outside of the TOML file and suggests moving them (and in the
+   IDE, provides a quickfix to performing the operation automatically).
+
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/java/com/example/unlocklogger/MainActivity.kt:88: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                countTextView.text = "Total Unlocks: $count"
+                                     ~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/java/com/example/unlocklogger/MainActivity.kt:88: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                countTextView.text = "Total Unlocks: $count"
+                                      ~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/java/com/example/unlocklogger/MainActivity.kt:92: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                    lastUpdatedText.text = "Last updated: ${formatter.format(Date(lastEvent.timestamp))}"
+                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/java/com/example/unlocklogger/MainActivity.kt:92: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                    lastUpdatedText.text = "Last updated: ${formatter.format(Date(lastEvent.timestamp))}"
+                                            ~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/java/com/example/unlocklogger/MainActivity.kt:94: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                    lastUpdatedText.text = "Last updated: --"
+                                            ~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "SetTextI18n":
+   When calling TextView#setText
+   * Never call Number#toString() to format numbers; it will not handle
+   fraction separators and locale-specific digits properly. Consider using
+   String#format with proper format specifications (%d or %f) instead.
+   * Do not pass a string literal (e.g. "Hello") to display text. Hardcoded
+   text can not be properly translated to other languages. Consider using
+   Android resource strings instead.
+   * Do not build messages by concatenating text chunks. Such messages can not
+   be properly translated.
+
+   https://developer.android.com/guide/topics/resources/localization.html
+
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/res/layout/activity_main.xml:12: Warning: Hardcoded string "Total Unlocks: 0", should use @string resource [HardcodedText]
+        android:text="Total Unlocks: 0"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/res/layout/activity_main.xml:21: Warning: Hardcoded string "Last updated: --", should use @string resource [HardcodedText]
+        android:text="Last updated: --"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/res/layout/activity_main.xml:36: Warning: Hardcoded string "Start", should use @string resource [HardcodedText]
+            android:text="Start" />
+            ~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/res/layout/activity_main.xml:43: Warning: Hardcoded string "Clear", should use @string resource [HardcodedText]
+            android:text="Clear" />
+            ~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/res/layout/activity_main.xml:50: Warning: Hardcoded string "Unlock history", should use @string resource [HardcodedText]
+        android:text="Unlock history"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/res/layout/activity_main.xml:74: Warning: Hardcoded string "No unlocks recorded in the last week.", should use @string resource [HardcodedText]
+                android:text="No unlocks recorded in the last week."
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/res/layout/item_unlock_event.xml:14: Warning: Hardcoded string "unlock", should use @string resource [HardcodedText]
+        android:contentDescription="unlock"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/res/layout/item_unlock_event.xml:29: Warning: Hardcoded string "2025-12-20 10:50:48", should use @string resource [HardcodedText]
+            android:text="2025-12-20 10:50:48"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/sangam/Pictures/unlocked-log/UnlockLogger/app/src/main/res/layout/item_unlock_event.xml:37: Warning: Hardcoded string "5 minutes ago", should use @string resource [HardcodedText]
+            android:text="5 minutes ago"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "HardcodedText":
+   Hardcoding text attributes directly in layout files is bad for several
+   reasons:
+
+   * When creating configuration variations (for example for landscape or
+   portrait) you have to repeat the actual text (and keep it up to date when
+   making changes)
+
+   * The application cannot be translated to other languages by just adding
+   new translations for existing string resources.
+
+   There are quickfixes to automatically extract this hardcoded string into a
+   resource lookup.
+
+0 errors, 55 warnings

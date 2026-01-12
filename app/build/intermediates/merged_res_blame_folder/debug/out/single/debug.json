@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/home/sangam/.gradle/daemon/8.4/com.example.unlocklogger.app-merged_res-36:/layout_activity_main.xml.flat",
+        "source": "/home/sangam/.gradle/daemon/8.4/com.example.unlocklogger.app-main-38:/layout/activity_main.xml"
+    },
+    {
+        "merged": "/home/sangam/.gradle/daemon/8.4/com.example.unlocklogger.app-merged_res-36:/layout_item_unlock_event.xml.flat",
+        "source": "/home/sangam/.gradle/daemon/8.4/com.example.unlocklogger.app-main-38:/layout/item_unlock_event.xml"
+    },
+    {
+        "merged": "com.example.unlocklogger.app-merged_res-36:/layout_item_unlock_event.xml.flat",
+        "source": "com.example.unlocklogger.app-main-38:/layout/item_unlock_event.xml"
+    }
+]

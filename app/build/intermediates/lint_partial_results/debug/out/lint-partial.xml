@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 8.2.0" type="partial_results">
+    <map id="UnsafeIntentLaunch">
+            <map id="unprotected">
+                <entry
+                    name="com.example.unlocklogger.MainActivity"
+                    boolean="true"/>
+                <entry
+                    name="com.example.unlocklogger.UnlockReceiver"
+                    boolean="true"/>
+                <entry
+                    name="com.example.unlocklogger.BootReceiver"
+                    boolean="true"/>
+            </map>
+    </map>
+    <map id="NotificationPermission">
+        <entry
+            name="source"
+            boolean="true"/>
+    </map>
+    <map id="UnusedResources">
+        <entry
+            name="model"
+            string="id[startButton(U),emptyText(D),icon(U),relTimeText(U),swipeRefresh(U),countTextView(U),clearButton(U),recyclerView(U),timeText(U),historyLabel(D),lastUpdatedText(U),textView(R),some_button_id(R)],layout[activity_main(U),item_unlock_event(U)],style[Theme_AppCompat_Light(R)];;;;"/>
+    </map>
+
+</incidents>

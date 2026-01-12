@@ -1,0 +1,4 @@
+com.example.unlocklogger.test.app-androidTest-0 /home/sangam/Pictures/unlocked-log/UnlockLogger/app/build/generated/res/resValues/androidTest/debug
+com.example.unlocklogger.test.app-mergeDebugAndroidTestResources-1 /home/sangam/Pictures/unlocked-log/UnlockLogger/app/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/merged.dir
+com.example.unlocklogger.test.app-mergeDebugAndroidTestResources-2 /home/sangam/Pictures/unlocked-log/UnlockLogger/app/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/stripped.dir
+com.example.unlocklogger.test.app-merged_res-3 /home/sangam/Pictures/unlocked-log/UnlockLogger/app/build/intermediates/merged_res/debugAndroidTest
