@@ -170,9 +170,9 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 val json = JSONObject(response)
-                val latestVersion = json.getInt("versionCode")
+                val latestVersion = json.getLong("versionCode")
                 val apkUrl = json.getString("apk_url")
-                val currentVersion = BuildConfig.VERSION_CODE
+                val currentVersion = getCurrentVersionCode()
 
                 if (latestVersion > currentVersion) {
                     withContext(Dispatchers.Main) {
@@ -184,6 +184,27 @@ class MainActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Log.e(TAG, "Update check failed", e)
             }
+        }
+    }
+
+    private fun getCurrentVersionCode(): Long {
+        return try {
+            val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0))
+            } else {
+                @Suppress("DEPRECATION")
+                packageManager.getPackageInfo(packageName, 0)
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                packageInfo.longVersionCode
+            } else {
+                @Suppress("DEPRECATION")
+                packageInfo.versionCode.toLong()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to read versionCode", e)
+            -1L
         }
     }
 
