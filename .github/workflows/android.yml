@@ -1,0 +1,184 @@
+name: Android CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  build-test-lint:
+    name: Build, Test, Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+          cache: gradle
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/libs.versions.toml') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./UnlockLogger/gradlew
+
+      - name: Build debug APK
+        working-directory: ./UnlockLogger
+        run: ./gradlew :app:assembleDebug
+
+      - name: Run unit tests
+        working-directory: ./UnlockLogger
+        run: ./gradlew :app:testDebugUnitTest
+
+      - name: Run lint
+        working-directory: ./UnlockLogger
+        run: ./gradlew :app:lintDebug
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: UnlockLogger/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
+  firebase-hosting:
+    name: Firebase Hosting (Debug APK)
+    runs-on: ubuntu-latest
+    needs: build-test-lint
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Download debug APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app-debug-apk
+          path: ./artifacts
+
+      - name: Prepare Firebase Hosting files
+        env:
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+        run: |
+          mkdir -p public
+          cp ./artifacts/*.apk public/app-debug.apk
+          VERSION=$(grep -m1 "versionCode" UnlockLogger/app/build.gradle 2>/dev/null | awk '{print $2}' | tr -d '\r' || true)
+          if [ -z "$VERSION" ]; then
+            VERSION=$(grep -m1 "versionCode" UnlockLogger/app/build.gradle.kts 2>/dev/null | sed -E 's/.*versionCode[[:space:]]*=?[[:space:]]*([0-9]+).*/\1/' | tr -d '\r' || true)
+          fi
+          if [ -z "$VERSION" ]; then
+            echo "versionCode not found in build.gradle(.kts)" >&2
+            exit 1
+          fi
+          cat > public/version.json <<EOF
+          {
+            "versionCode": ${VERSION},
+            "apk_url": "https://${FIREBASE_PROJECT_ID}.web.app/app-debug.apk"
+          }
+          EOF
+
+      - name: Deploy to Firebase Hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+        run: |
+          npm install -g firebase-tools
+          firebase deploy --only hosting --project "$FIREBASE_PROJECT_ID" --token "$FIREBASE_TOKEN"
+
+  # Optional: Signed release AAB
+  release-aab:
+    name: Signed Release AAB (Optional)
+    runs-on: ubuntu-latest
+    needs: build-test-lint
+    if: ${{ false }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./UnlockLogger/gradlew
+
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > $RUNNER_TEMP/release.keystore
+
+      - name: Build signed release AAB
+        working-directory: ./UnlockLogger
+        env:
+          ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/release.keystore
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: ./gradlew :app:bundleRelease
+
+      - name: Upload release AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-aab
+          path: UnlockLogger/app/build/outputs/bundle/release/*.aab
+          if-no-files-found: error
+
+  # Optional: Firebase App Distribution
+  firebase-distribute:
+    name: Firebase App Distribution (Optional)
+    runs-on: ubuntu-latest
+    needs: build-test-lint
+    if: ${{ false }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./UnlockLogger/gradlew
+
+      - name: Build debug APK
+        working-directory: ./UnlockLogger
+        run: ./gradlew :app:assembleDebug
+
+      - name: Upload to Firebase App Distribution
+        working-directory: ./UnlockLogger
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+        run: |
+          ./gradlew appDistributionUploadDebug \
+            -PfirebaseAppId="$FIREBASE_APP_ID" \
+            -PfirebaseToken="$FIREBASE_TOKEN"
