@@ -1,5 +1,8 @@
 name: Android CI
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   push:
     branches: ["main"]
@@ -36,25 +39,25 @@ jobs:
             gradle-${{ runner.os }}-
 
       - name: Grant execute permission for gradlew
-        run: chmod +x ./UnlockLogger/gradlew
+        run: chmod +x ./gradlew
 
       - name: Build debug APK
-        working-directory: ./UnlockLogger
+        working-directory: .
         run: ./gradlew :app:assembleDebug
 
       - name: Run unit tests
-        working-directory: ./UnlockLogger
+        working-directory: .
         run: ./gradlew :app:testDebugUnitTest
 
       - name: Run lint
-        working-directory: ./UnlockLogger
+        working-directory: .
         run: ./gradlew :app:lintDebug
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
           name: app-debug-apk
-          path: UnlockLogger/app/build/outputs/apk/debug/*.apk
+          path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
 
   firebase-hosting:
@@ -84,9 +87,9 @@ jobs:
         run: |
           mkdir -p public
           cp ./artifacts/*.apk public/app-debug.apk
-          VERSION=$(grep -m1 "versionCode" UnlockLogger/app/build.gradle 2>/dev/null | awk '{print $2}' | tr -d '\r' || true)
+          VERSION=$(grep -m1 "versionCode" app/build.gradle 2>/dev/null | awk '{print $2}' | tr -d '\r' || true)
           if [ -z "$VERSION" ]; then
-            VERSION=$(grep -m1 "versionCode" UnlockLogger/app/build.gradle.kts 2>/dev/null | sed -E 's/.*versionCode[[:space:]]*=?[[:space:]]*([0-9]+).*/\1/' | tr -d '\r' || true)
+            VERSION=$(grep -m1 "versionCode" app/build.gradle.kts 2>/dev/null | sed -E 's/.*versionCode[[:space:]]*=?[[:space:]]*([0-9]+).*/\1/' | tr -d '\r' || true)
           fi
           if [ -z "$VERSION" ]; then
             echo "versionCode not found in build.gradle(.kts)" >&2
@@ -126,14 +129,14 @@ jobs:
           cache: gradle
 
       - name: Grant execute permission for gradlew
-        run: chmod +x ./UnlockLogger/gradlew
+        run: chmod +x ./gradlew
 
       - name: Decode keystore
         run: |
           echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > $RUNNER_TEMP/release.keystore
 
       - name: Build signed release AAB
-        working-directory: ./UnlockLogger
+        working-directory: .
         env:
           ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/release.keystore
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -145,7 +148,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-release-aab
-          path: UnlockLogger/app/build/outputs/bundle/release/*.aab
+          path: app/build/outputs/bundle/release/*.aab
           if-no-files-found: error
 
   # Optional: Firebase App Distribution
@@ -167,14 +170,14 @@ jobs:
           cache: gradle
 
       - name: Grant execute permission for gradlew
-        run: chmod +x ./UnlockLogger/gradlew
+        run: chmod +x ./gradlew
 
       - name: Build debug APK
-        working-directory: ./UnlockLogger
+        working-directory: .
         run: ./gradlew :app:assembleDebug
 
       - name: Upload to Firebase App Distribution
-        working-directory: ./UnlockLogger
+        working-directory: .
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
