@@ -10,7 +10,7 @@ on:
     branches: ["main"]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build-test-lint:
@@ -84,16 +84,11 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Download debug APK artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: app-debug-apk
-          path: ./artifacts
-
       - name: Prepare Firebase Hosting files
         env:
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         run: |
+          rm -rf public
           mkdir -p public
           VERSION=$(grep -m1 "versionCode" app/build.gradle 2>/dev/null | awk '{print $2}' | tr -d '\r' || true)
           if [ -z "$VERSION" ]; then
