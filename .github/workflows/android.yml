@@ -60,6 +60,15 @@ jobs:
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
 
+      - name: Upload APK to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.run_number }}
+          name: v${{ github.run_number }}
+          files: app/build/outputs/apk/debug/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   firebase-hosting:
     name: Firebase Hosting (Debug APK)
     runs-on: ubuntu-latest
@@ -86,7 +95,6 @@ jobs:
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         run: |
           mkdir -p public
-          cp ./artifacts/*.apk public/app-debug.apk
           VERSION=$(grep -m1 "versionCode" app/build.gradle 2>/dev/null | awk '{print $2}' | tr -d '\r' || true)
           if [ -z "$VERSION" ]; then
             VERSION=$(grep -m1 "versionCode" app/build.gradle.kts 2>/dev/null | sed -E 's/.*versionCode[[:space:]]*=?[[:space:]]*([0-9]+).*/\1/' | tr -d '\r' || true)
@@ -98,7 +106,7 @@ jobs:
           cat > public/version.json <<EOF
           {
             "versionCode": ${VERSION},
-            "apk_url": "https://${FIREBASE_PROJECT_ID}.web.app/app-debug.apk"
+            "apk_url": "https://github.com/${{ github.repository }}/releases/download/v${{ github.run_number }}/app-debug.apk"
           }
           EOF
 
