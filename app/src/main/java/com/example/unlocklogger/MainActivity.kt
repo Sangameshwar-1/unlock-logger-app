@@ -5,13 +5,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         startUnlockLoggerService()
         refreshUI()
         registerDownloadReceiver()
-        checkForUpdate()
+        checkForGithubUpdate()
         
         swipeRefresh.setOnRefreshListener {
             refreshUI()
@@ -152,14 +152,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkForUpdate() {
+    private fun checkForGithubUpdate() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val updateUrl = getString(R.string.update_info_url)
-                val connection = URL(updateUrl).openConnection() as HttpURLConnection
+                val releaseUrl = getString(R.string.github_release_api_url)
+                val connection = URL(releaseUrl).openConnection() as HttpURLConnection
                 connection.connectTimeout = 8000
                 connection.readTimeout = 8000
                 connection.requestMethod = "GET"
+                connection.setRequestProperty("Accept", "application/vnd.github+json")
 
                 val reader = BufferedReader(InputStreamReader(connection.inputStream))
                 val response = buildString {
@@ -171,48 +172,41 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 val json = JSONObject(response)
-                val latestVersion = json.getLong("versionCode")
-                val apkUrl = json.getString("apk_url")
-                val currentVersion = getCurrentVersionCode()
+                val latestVersion = json.optString("tag_name").trim()
+                val assets = json.optJSONArray("assets")
+                val apkAssetName = getString(R.string.github_apk_asset_name)
 
-                if (latestVersion > currentVersion) {
+                val apkUrl = findApkUrl(assets, apkAssetName)
+                val currentVersion = getCurrentVersionName()
+
+                if (apkUrl != null && isNewerVersion(latestVersion, currentVersion)) {
                     withContext(Dispatchers.Main) {
-                        downloadApk(apkUrl)
+                        showUpdateDialog(latestVersion, apkUrl)
                     }
                 } else {
-                    Log.d(TAG, "No update available. Current=$currentVersion, Latest=$latestVersion")
+                    Log.d(TAG, "No GitHub update. Current=$currentVersion, Latest=$latestVersion")
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Update check failed", e)
+                Log.e(TAG, "GitHub update check failed", e)
             }
         }
     }
 
-    private fun getCurrentVersionCode(): Long {
-        return try {
-            val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0))
-            } else {
-                @Suppress("DEPRECATION")
-                packageManager.getPackageInfo(packageName, 0)
+    private fun showUpdateDialog(latestVersion: String, apkUrl: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Update available")
+            .setMessage("A new version ($latestVersion) is available. Download and install?")
+            .setPositiveButton("Download") { _, _ ->
+                downloadApk(apkUrl)
             }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                packageInfo.longVersionCode
-            } else {
-                @Suppress("DEPRECATION")
-                packageInfo.versionCode.toLong()
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to read versionCode", e)
-            -1L
-        }
+            .setNegativeButton("Later", null)
+            .show()
     }
 
     private fun downloadApk(apkUrl: String) {
         val request = DownloadManager.Request(Uri.parse(apkUrl))
-            .setTitle("App Update")
-            .setDescription("Downloading latest version...")
+            .setTitle("Unlock Logger Update")
+            .setDescription("Downloading update...")
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             .setMimeType("application/vnd.android.package-archive")
 
@@ -248,6 +242,62 @@ class MainActivity : AppCompatActivity() {
             filter,
             ContextCompat.RECEIVER_NOT_EXPORTED
         )
+    }
+
+    private fun getCurrentVersionName(): String {
+        return try {
+            val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                packageManager.getPackageInfo(packageName, android.content.pm.PackageManager.PackageInfoFlags.of(0))
+            } else {
+                @Suppress("DEPRECATION")
+                packageManager.getPackageInfo(packageName, 0)
+            }
+
+            packageInfo.versionName ?: "0.0.0"
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to read versionName", e)
+            "0.0.0"
+        }
+    }
+
+    private fun isNewerVersion(latest: String, current: String): Boolean {
+        val latestParts = normalizeVersion(latest)
+        val currentParts = normalizeVersion(current)
+        val maxSize = maxOf(latestParts.size, currentParts.size)
+        for (i in 0 until maxSize) {
+            val l = latestParts.getOrElse(i) { 0 }
+            val c = currentParts.getOrElse(i) { 0 }
+            if (l != c) return l > c
+        }
+        return false
+    }
+
+    private fun normalizeVersion(version: String): List<Int> {
+        val cleaned = version.trim().lowercase(Locale.getDefault()).removePrefix("v")
+        return cleaned
+            .replace(Regex("[^0-9.]"), "")
+            .split(".")
+            .filter { it.isNotBlank() }
+            .map { it.toIntOrNull() ?: 0 }
+    }
+
+    private fun findApkUrl(assets: org.json.JSONArray?, preferredName: String): String? {
+        if (assets == null) return null
+        var fallback: String? = null
+
+        for (i in 0 until assets.length()) {
+            val asset = assets.getJSONObject(i)
+            val name = asset.optString("name")
+            val url = asset.optString("browser_download_url")
+            if (name.equals(preferredName, ignoreCase = true)) {
+                return url
+            }
+            if (name.endsWith(".apk", ignoreCase = true)) {
+                fallback = url
+            }
+        }
+
+        return fallback
     }
 
     override fun onDestroy() {
