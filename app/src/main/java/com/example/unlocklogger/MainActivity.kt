@@ -50,6 +50,39 @@ class MainActivity : AppCompatActivity() {
             if (id != updateDownloadId) return
 
             val manager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+
+            val query = DownloadManager.Query().setFilterById(id)
+            val status: Int
+            val reason: Int
+            manager.query(query).use { cursor ->
+                if (!cursor.moveToFirst()) {
+                    Log.e(TAG, "Download record not found for id=$id")
+                    return
+                }
+                status = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_STATUS))
+                reason = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_REASON))
+            }
+
+            if (status != DownloadManager.STATUS_SUCCESSFUL) {
+                Log.e(TAG, "Download failed: status=$status, reason=$reason")
+                val reasonMsg = when (reason) {
+                    DownloadManager.ERROR_INSUFFICIENT_SPACE -> "insufficient storage space"
+                    DownloadManager.ERROR_FILE_ERROR -> "a storage error"
+                    DownloadManager.ERROR_HTTP_DATA_ERROR -> "a network data error"
+                    DownloadManager.ERROR_UNHANDLED_HTTP_CODE -> "an unexpected server response"
+                    DownloadManager.ERROR_CANNOT_RESUME -> "a resume failure (try again)"
+                    else -> "an unknown error (code $reason)"
+                }
+                runOnUiThread {
+                    AlertDialog.Builder(this@MainActivity)
+                        .setTitle("Download failed")
+                        .setMessage("The update could not be downloaded due to $reasonMsg. Please try again later.")
+                        .setPositiveButton("OK", null)
+                        .show()
+                }
+                return
+            }
+
             val apkUri = manager.getUriForDownloadedFile(id)
             if (apkUri == null) {
                 Log.e(TAG, "Downloaded APK URI is null")
@@ -266,10 +299,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            setDataAndType(apkUri, "application/vnd.android.package-archive")
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val intent = Intent(Intent.ACTION_INSTALL_PACKAGE).apply {
+            data = apkUri
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
+            putExtra(Intent.EXTRA_INSTALLER_PACKAGE_NAME, packageName)
         }
         startActivity(intent)
     }
