@@ -81,28 +81,19 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
-      - name: Decode keystore
-        run: |
-          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > $RUNNER_TEMP/release.keystore
-
-      - name: Build signed release APK
+      - name: Build debug APK
         working-directory: .
-        env:
-          ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/release.keystore
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        run: ./gradlew :app:assembleRelease
+        run: ./gradlew :app:assembleDebug
 
       - name: Prepare release asset
         run: |
           mkdir -p dist
-          cp app/build/outputs/apk/release/app-release.apk dist/app-release.apk
+          cp app/build/outputs/apk/debug/app-debug.apk dist/app-debug.apk
 
       - name: Upload APK to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/app-release.apk
+          files: dist/app-debug.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     
     private lateinit var countTextView: TextView
     private lateinit var lastUpdatedText: TextView
+    private lateinit var updateStatusText: TextView
     private lateinit var startButton: Button
     private lateinit var clearButton: Button
     private lateinit var recyclerView: RecyclerView
@@ -79,6 +80,7 @@ class MainActivity : AppCompatActivity() {
     private fun initializeViews() {
         countTextView = findViewById(R.id.countTextView)
         lastUpdatedText = findViewById(R.id.lastUpdatedText)
+        updateStatusText = findViewById(R.id.updateStatusText)
         startButton = findViewById(R.id.startButton)
         clearButton = findViewById(R.id.clearButton)
         recyclerView = findViewById(R.id.recyclerView)
@@ -155,20 +157,37 @@ class MainActivity : AppCompatActivity() {
     private fun checkForGithubUpdate() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
+                withContext(Dispatchers.Main) {
+                    setUpdateStatus("Update: checking...")
+                }
+                Log.d(TAG, "Checking for GitHub update...")
                 val releaseUrl = getString(R.string.github_release_api_url)
                 val connection = URL(releaseUrl).openConnection() as HttpURLConnection
                 connection.connectTimeout = 8000
                 connection.readTimeout = 8000
                 connection.requestMethod = "GET"
                 connection.setRequestProperty("Accept", "application/vnd.github+json")
+                connection.setRequestProperty("User-Agent", "UnlockLogger")
 
-                val reader = BufferedReader(InputStreamReader(connection.inputStream))
+                val responseCode = connection.responseCode
+                val stream = if (responseCode in 200..299) {
+                    connection.inputStream
+                } else {
+                    connection.errorStream
+                }
+
+                val reader = BufferedReader(InputStreamReader(stream))
                 val response = buildString {
                     var line: String?
                     while (true) {
                         line = reader.readLine() ?: break
                         append(line)
                     }
+                }
+
+                if (responseCode !in 200..299) {
+                    Log.e(TAG, "GitHub API error $responseCode: $response")
+                    return@launch
                 }
 
                 val json = JSONObject(response)
@@ -179,17 +198,38 @@ class MainActivity : AppCompatActivity() {
                 val apkUrl = findApkUrl(assets, apkAssetName)
                 val currentVersion = getCurrentVersionName()
 
+                Log.d(
+                    TAG,
+                    "Release parsed. Latest=$latestVersion, Current=$currentVersion, ApkUrl=${apkUrl ?: "none"}"
+                )
+
                 if (apkUrl != null && isNewerVersion(latestVersion, currentVersion)) {
                     withContext(Dispatchers.Main) {
+                        setUpdateStatus("Update available: $latestVersion")
                         showUpdateDialog(latestVersion, apkUrl)
+                    }
+                } else if (apkUrl == null) {
+                    Log.w(TAG, "No APK asset found in release. Looking for $apkAssetName")
+                    withContext(Dispatchers.Main) {
+                        setUpdateStatus("Update unavailable (APK not found)")
                     }
                 } else {
                     Log.d(TAG, "No GitHub update. Current=$currentVersion, Latest=$latestVersion")
+                    withContext(Dispatchers.Main) {
+                        setUpdateStatus("Update: up to date")
+                    }
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "GitHub update check failed", e)
+                withContext(Dispatchers.Main) {
+                    setUpdateStatus("Update check failed")
+                }
             }
         }
+    }
+
+    private fun setUpdateStatus(status: String) {
+        updateStatusText.text = status
     }
 
     private fun showUpdateDialog(latestVersion: String, apkUrl: String) {
