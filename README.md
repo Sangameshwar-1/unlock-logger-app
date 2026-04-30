@@ -1,103 +1,86 @@
-# Unlock Logger (Android)
+# Unlock Logger (Android) — CI/CD Demo Project
 
-`Unlock Logger` is a simple Android app that **logs device unlock events** (when the user unlocks the phone after the screen was off), stores them locally using **Room (SQLite)**, and shows the history in a basic UI.
+This project is an Android app that logs device unlock events and is also designed to demonstrate a practical **CI/CD pipeline for Android** using **GitHub Actions**.
 
 Repo: https://github.com/Sangameshwar-1/unlock-logger-app
 
-## What it does
+## Objective
 
-- Runs a **foreground service** (`UnlockLoggerService`) to reliably monitor screen/unlock broadcasts.
-- Detects unlocks using a “screen off → user present” flow:
-  - `ACTION_SCREEN_OFF` sets a flag
-  - `ACTION_USER_PRESENT` logs an event only if the screen was previously off
-- Stores unlock timestamps in a **Room database**
-- Displays:
-  - total unlock count
-  - last updated time
-  - a list of unlock events (timestamp + relative time)
-- Restarts the service on device boot via `BootReceiver`
+**Primary objective:** implement a complete CI/CD setup for an Android app:
+- Build on every push / pull request
+- Run checks (tests/lint)
+- Upload build artifacts (APK)
+- Create release builds on version tags (optional)
+- (Optional) Publish to GitHub Releases
 
-## App components (high level)
+## What the app does (feature summary)
 
-- **`MainActivity`**
-  - Starts the foreground service
-  - Reads events from the DB and displays them in a `RecyclerView`
-  - Allows clearing the database
-  - Supports swipe-to-refresh
+- Foreground service monitors unlock events (screen off → user present)
+- Stores unlock timestamps locally using Room (SQLite)
+- Displays total count and unlock history
+- Restarts on device boot
 
-- **`UnlockLoggerService`**
-  - Foreground service with persistent notification (“Unlock Logger Active”)
-  - Registers a receiver for:
-    - `Intent.ACTION_SCREEN_ON`
-    - `Intent.ACTION_SCREEN_OFF`
-    - `Intent.ACTION_USER_PRESENT`
-  - On unlock detection, inserts an `UnlockEvent` into Room and updates the notification count
+## Tech stack
 
-- **Receivers**
-  - `UnlockReceiver`: listens for `android.intent.action.USER_PRESENT` and triggers logging via the service helper
-  - `BootReceiver`: listens for `android.intent.action.BOOT_COMPLETED` to start the service after reboot
-
-- **Database (Room)**
-  - `UnlockEvent` entity (`unlock_events` table)
-  - `UnlockEventDao` for insert/query/delete
-  - `AppDatabase` singleton for DB access
-
-## Permissions used
-
-Declared in `app/src/main/AndroidManifest.xml`:
-
-- `android.permission.RECEIVE_BOOT_COMPLETED`
-- `android.permission.FOREGROUND_SERVICE`
-- `android.permission.FOREGROUND_SERVICE_SPECIAL_USE`
-- `android.permission.POST_NOTIFICATIONS` (required on Android 13+ to show notifications)
-
-## Requirements
-
-- Android Studio (recommended)
-- Android SDK / Gradle
-- **minSdk 26**, **targetSdk 34**, **compileSdk 34**
-- Java 17 / Kotlin JVM target 17
-
-Key dependencies:
+- Android (minSdk 26, targetSdk 34, compileSdk 34)
+- Kotlin / Java 17
+- Room (SQLite) + KSP
 - AndroidX + Material
-- SwipeRefreshLayout
-- Room (`room-runtime`, `room-ktx`) with **KSP** (`room-compiler`)
 
-## Build & run
+---
 
-1. Clone:
-   ```bash
-   git clone https://github.com/Sangameshwar-1/unlock-logger-app.git
-   cd unlock-logger-app
-   ```
+## CI/CD with GitHub Actions
 
-2. Open in **Android Studio**.
+### 1) Continuous Integration (CI)
 
-3. Sync Gradle, then run on a device/emulator (note: unlock events are best tested on a real device).
+Triggered on:
+- `push` to `main`
+- `pull_request` to `main`
 
-## How unlock detection works (logic)
+Pipeline steps:
+- Checkout code
+- Setup JDK 17
+- Setup Android SDK
+- Cache Gradle
+- Run:
+  - `./gradlew test`
+  - `./gradlew lint` (recommended)
+  - `./gradlew assembleDebug`
+- Upload artifact:
+  - `app/build/outputs/apk/debug/app-debug.apk`
 
-The service logs an unlock only when it sees:
+### 2) Continuous Delivery (CD) — optional release pipeline
 
-1. Screen turns off (`ACTION_SCREEN_OFF`) → sets `wasScreenOff = true`
-2. User unlocks (`ACTION_USER_PRESENT`) and `wasScreenOff == true` → log event and reset flag
+Triggered on tags:
+- `v*` (example: `v1.0.0`)
 
-This avoids logging spurious `USER_PRESENT` events that didn’t follow a screen-off transition.
+Pipeline steps:
+- Build Release APK/AAB
+- (Optional) Sign the Release build using secrets
+- Create a GitHub Release and attach the artifact
 
-## Included APK
+### Badges (after workflows are added)
 
-This repository includes a debug APK:
+After adding workflows, you can add badges like:
 
-- `app-debug.apk` (see repo root)
+- CI: `https://github.com/Sangameshwar-1/unlock-logger-app/actions/workflows/android-ci.yml/badge.svg`
+- Release: `https://github.com/Sangameshwar-1/unlock-logger-app/actions/workflows/android-release.yml/badge.svg`
 
-> Note: For security and trust reasons, users should ideally build the APK from source rather than installing a random debug APK.
+---
 
-## Notes / limitations
+## Build & run locally
 
-- Broadcast-based unlock tracking can vary across OEMs and Android versions.
-- Foreground services require a persistent notification.
-- On Android 13+ you must grant notification permission, otherwise the service notification may not show correctly.
+```bash
+git clone https://github.com/Sangameshwar-1/unlock-logger-app.git
+cd unlock-logger-app
+./gradlew assembleDebug
+```
+
+Then install (example):
+```bash
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+```
 
 ## License
 
-No license file is currently included in the repository. If you want others to use/modify the code, add a `LICENSE` (MIT/Apache-2.0/etc.).
+No license file is currently included.
