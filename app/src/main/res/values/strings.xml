@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Unlock Logger</string>
-    <string name="github_release_api_url">https://api.github.com/repos/Sangameshwar-1/unlock-logger-app/releases/latest</string>
-    <string name="github_apk_asset_name">app-debug.apk</string>
 </resources>
